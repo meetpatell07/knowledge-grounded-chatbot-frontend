@@ -7,6 +7,7 @@ import SessionSidebar from '@/components/SessionSidebar'
 import { sendMessage, getSessionMessages, type APIMessage } from '@/lib/api'
 import type { Message } from '@/types/chat'
 import type { SourceType } from '@/lib/api'
+import LLMToggle from '@/components/LLMToggle'
 
 const SESSION_STORAGE_KEY = 'kg-chatbot-session-id'
 
@@ -24,6 +25,7 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const loadingRef = useRef(false) // Prevent concurrent loads
+  const [enableLLM, setEnableLLM] = useState(false)
 
   // Save session to localStorage when it changes
   useEffect(() => {
@@ -134,7 +136,7 @@ export default function Home() {
     setIsLoading(true)
 
     try {
-      const response = await sendMessage(sessionId || undefined, message)
+      const response = await sendMessage(sessionId || undefined, message, enableLLM)  // Update this line
       
       // Generate temporary ID for assistant message
       const tempAssistantId = `temp-assistant-${Date.now()}-${Math.random()}`
@@ -284,7 +286,12 @@ export default function Home() {
 
         {/* Input Container */}
         <div className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
-          <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
+            <LLMToggle 
+              enabled={enableLLM} 
+              onChange={setEnableLLM}
+              disabled={isLoading}
+            />
             <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
           </div>
         </div>

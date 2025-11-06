@@ -3,6 +3,7 @@ const API_URL = process.env.API_URL || 'https://knowledge-grounded-chatbot.onren
 export interface ChatRequest {
   session_id?: string
   message: string
+  enable_llm?: boolean 
 }
 
 export type SourceType = 'KB' | 'KB+LLM' | 'LLM' | 'error'
@@ -15,7 +16,8 @@ export interface ChatResponse {
 
 export async function sendMessage(
   sessionId: string | undefined,
-  message: string
+  message: string,
+  enableLLM: boolean = false  // Add this parameter
 ): Promise<ChatResponse> {
   const response = await fetch(`${API_URL}/chat`, {
     method: 'POST',
@@ -25,6 +27,7 @@ export async function sendMessage(
     body: JSON.stringify({
       session_id: sessionId,
       message,
+      enable_llm: enableLLM,  // Add this line
     } as ChatRequest),
   })
 
