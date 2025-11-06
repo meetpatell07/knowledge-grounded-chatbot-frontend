@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_URL = process.env.API_URL || 'http://localhost:8000'
 // Remove PRISMA_API_URL - no longer needed
 // const PRISMA_API_URL = process.env.NEXT_PUBLIC_PRISMA_API_URL || 'http://localhost:4000'
 
@@ -46,7 +46,7 @@ export async function sendMessage(
   }
 }
 
-export async function checkHealth(): Promise<{ status: string }> {
+export async function checkHealth(): Promise<{ status: string; database?: string; error?: string }> {
   const response = await fetch(`${API_URL}/health`)
   if (!response.ok) {
     throw new Error('Health check failed')
@@ -60,10 +60,10 @@ export interface Session {
   userId: string | null
   createdAt: string
   lastActive: string
-  messages: PrismaMessage[]
+  messages: APIMessage[]
 }
 
-export interface PrismaMessage {
+export interface APIMessage {
   id: string
   sessionId: string
   role: string
@@ -73,19 +73,17 @@ export interface PrismaMessage {
 }
 
 export async function getAllSessions(): Promise<Session[]> {
-  // Changed: Use FastAPI endpoint instead of Express service
   const response = await fetch(`${API_URL}/sessions`)
   if (!response.ok) {
-    throw new Error('Failed to fetch sessions')
+    throw new Error(`Failed to fetch sessions: ${response.statusText}`)
   }
   return response.json()
 }
 
-export async function getSessionMessages(sessionId: string): Promise<PrismaMessage[]> {
-  // Changed: Use FastAPI endpoint instead of Express service
+export async function getSessionMessages(sessionId: string): Promise<APIMessage[]> {
   const response = await fetch(`${API_URL}/sessions/${sessionId}/messages`)
   if (!response.ok) {
-    throw new Error('Failed to fetch messages')
+    throw new Error(`Failed to fetch messages: ${response.statusText}`)
   }
   return response.json()
 }
