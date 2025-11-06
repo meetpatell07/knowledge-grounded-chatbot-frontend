@@ -1,5 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-const PRISMA_API_URL = process.env.NEXT_PUBLIC_PRISMA_API_URL || 'http://localhost:4000'
+// Remove PRISMA_API_URL - no longer needed
+// const PRISMA_API_URL = process.env.NEXT_PUBLIC_PRISMA_API_URL || 'http://localhost:4000'
 
 export interface ChatRequest {
   session_id?: string
@@ -72,7 +73,8 @@ export interface PrismaMessage {
 }
 
 export async function getAllSessions(): Promise<Session[]> {
-  const response = await fetch(`${PRISMA_API_URL}/sessions`)
+  // Changed: Use FastAPI endpoint instead of Express service
+  const response = await fetch(`${API_URL}/sessions`)
   if (!response.ok) {
     throw new Error('Failed to fetch sessions')
   }
@@ -80,7 +82,8 @@ export async function getAllSessions(): Promise<Session[]> {
 }
 
 export async function getSessionMessages(sessionId: string): Promise<PrismaMessage[]> {
-  const response = await fetch(`${PRISMA_API_URL}/sessions/${sessionId}/messages`)
+  // Changed: Use FastAPI endpoint instead of Express service
+  const response = await fetch(`${API_URL}/sessions/${sessionId}/messages`)
   if (!response.ok) {
     throw new Error('Failed to fetch messages')
   }

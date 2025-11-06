@@ -18,13 +18,14 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Load session from localStorage on mount
-  useEffect(() => {
-    const savedSessionId = localStorage.getItem(SESSION_STORAGE_KEY)
-    if (savedSessionId) {
-      setSessionId(savedSessionId)
-      loadSessionMessages(savedSessionId)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const savedSessionId = localStorage.getItem(SESSION_STORAGE_KEY)
+  //   if (savedSessionId) {
+  //     setSessionId(savedSessionId)
+  //     loadSessionMessages(savedSessionId)
+  //   }
+  // }, [])
+  
 
   // Save session to localStorage when it changes
   useEffect(() => {
@@ -59,6 +60,15 @@ export default function Home() {
       setIsLoadingMessages(false)
     }
   }
+  
+  // Load session from localStorage on mount
+  useEffect(() => {
+    const savedSessionId = localStorage.getItem(SESSION_STORAGE_KEY)
+    if (savedSessionId) {
+      setSessionId(savedSessionId)
+      loadSessionMessages(savedSessionId)
+    }
+  }, [loadSessionMessages]) // <-- Added loadSessionMessages here
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -179,8 +189,7 @@ export default function Home() {
                 Start a conversation
               </h2>
               <p className="text-slate-500 dark:text-slate-400 max-w-md">
-                Ask me anything about the knowledge base. I'll help you find the information you need.
-              </p>
+              Ask me anything about the knowledge base. **I&apos;ll** help you find the information you need.              </p>
             </div>
           ) : (
             messages.map((message, index) => (
