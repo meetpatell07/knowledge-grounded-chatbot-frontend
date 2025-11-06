@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import React from "react";
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'onAnimationStart' | 'onAnimationEnd' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+  > {
   variant?: "default" | "ghost" | "outline";
   size?: "sm" | "md" | "lg";
 }
