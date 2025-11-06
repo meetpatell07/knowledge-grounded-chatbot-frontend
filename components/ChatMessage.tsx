@@ -14,7 +14,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
         : 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
     }`}>
-      {message.source === 'KB' && 'Source: Internal Docs'}
+      {message.source === 'KB' && 'KB'}
       {message.source === 'KB+LLM' && 'KB + LLM'}
       {message.source === 'LLM' && 'General LLM Response'}
     </span>
