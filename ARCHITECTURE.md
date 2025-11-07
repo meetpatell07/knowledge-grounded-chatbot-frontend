@@ -526,26 +526,3 @@ handleSendMessage(message)
       ├─► Add assistant message with source badge
       └─► Reload messages from server (to get real IDs)
 ```
-
-## Performance Optimizations
-
-1. **useCallback**: Memoize event handlers to prevent unnecessary re-renders
-2. **useRef**: Store DOM references without causing re-renders
-3. **Optimistic Updates**: Show messages immediately, sync with server later
-4. **Code Splitting**: Next.js automatically splits code by route
-5. **Image Optimization**: Next.js Image component (if images added)
-
-## Security Considerations
-
-1. **Environment Variables**: API URL in `NEXT_PUBLIC_*` (exposed to browser by design)
-2. **Input Validation**: React's built-in XSS protection (automatic escaping)
-3. **CORS**: Handled by backend CORS middleware
-4. **No Sensitive Data**: No API keys or secrets in frontend code
-
-## Future Enhancements
-
-1. **State Management**: Consider Zustand if state becomes more complex
-2. **Real-time Updates**: WebSocket for live message updates
-3. **Offline Support**: Service workers for offline functionality
-4. **Testing**: Add Jest + React Testing Library
-5. **Error Boundaries**: Better error handling with React error boundaries
