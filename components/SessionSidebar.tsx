@@ -36,9 +36,8 @@ export default function SessionSidebar({
   }, [])
 
   const handleDeleteSession = async (sessionId: string, e: React.MouseEvent) => {
-    e.stopPropagation() // Prevent triggering the session select
+    e.stopPropagation()
     
-    // Confirm deletion
     if (!confirm('Are you sure you want to delete this conversation? This action cannot be undone.')) {
       return
     }
@@ -56,7 +55,14 @@ export default function SessionSidebar({
       await loadSessions()
     } catch (error) {
       console.error('Error deleting session:', error)
-      alert('Failed to delete session. Please try again.')
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete session'
+      
+      // More user-friendly error message
+      if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        alert('Delete endpoint not available. Please ensure the backend is updated and deployed.')
+      } else {
+        alert(`Failed to delete session: ${errorMessage}`)
+      }
     } finally {
       setDeletingSessionId(null)
     }
